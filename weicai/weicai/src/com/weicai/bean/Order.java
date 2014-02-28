@@ -163,9 +163,12 @@ public class Order {
 			} catch (ParseException e) {
 			}
 
-			JSONArray order_items = p.getJSONArray("order_items");
-			List<OrderItem> items = OrderItem.jsonToList(order_items);
-			order.setOrderItems(items);
+			if (p.has("order_items")){
+				JSONArray order_items = p.getJSONArray("order_items");
+				List<OrderItem> items = OrderItem.jsonToList(order_items);
+				order.setOrderItems(items);
+			}
+			
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

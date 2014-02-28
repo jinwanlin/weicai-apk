@@ -216,6 +216,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (paymentsFragment == null) {
 				// 如果NewsFragment为空，则创建一个并添加到界面上
 				paymentsFragment = new PaymentsFragment();
+				paymentsFragment.setContext(this);
 				transaction.add(R.id.content, paymentsFragment);
 			} else {
 				// 如果NewsFragment不为空，则直接将它显示出来
