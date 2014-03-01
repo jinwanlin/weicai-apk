@@ -16,13 +16,14 @@
     
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/baicai"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         
         <activity
             android:name="com.weicai.activity.SignInActivity"
             android:screenOrientation="portrait"
+       		android:icon="@drawable/baicai"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,11 +34,7 @@
         <activity
             android:name="com.weicai.activity.MainActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
