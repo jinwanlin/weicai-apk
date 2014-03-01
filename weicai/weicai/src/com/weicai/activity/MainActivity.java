@@ -3,8 +3,13 @@ package com.weicai.activity;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -19,6 +24,7 @@ import com.weicai.R;
  * @author guolin
  */
 public class MainActivity extends Activity implements OnClickListener {
+	static final String tag = "MainActivity";
 
 	/**
 	 * 用于展示消息的Fragment
@@ -103,20 +109,21 @@ public class MainActivity extends Activity implements OnClickListener {
 	/**
 	 * 用于对Fragment进行管理
 	 */
-	private FragmentManager fragmentManager;
+	public static FragmentManager fragmentManager;
 	
 	public static OrderFragment orderFragment;
 	
+
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
+		
 		// 初始化布局元素
 		initViews();
-//		if (fragmentManager==null){
-			fragmentManager = getFragmentManager();
-//		}
+		fragmentManager = getFragmentManager();
 		// 第一次启动时选中第0个tab
 		setTabSelection(0);
 	}
@@ -231,6 +238,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (settingFragment == null) {
 				// 如果SettingFragment为空，则创建一个并添加到界面上
 				settingFragment = new SettingFragment();
+				settingFragment.setContext(this);
 				transaction.add(R.id.content, settingFragment);
 			} else {
 				// 如果SettingFragment不为空，则直接将它显示出来
@@ -278,4 +286,19 @@ public class MainActivity extends Activity implements OnClickListener {
 			transaction.hide(settingFragment);
 		}
 	}
+	
+	public void call(String phone){
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.CALL");
+		intent.setData(Uri.parse("tel:" + phone));
+		startActivity(intent);
+	}
+	
+	public void sendSMS(String phone){
+        SmsManager smsManager = SmsManager.getDefault();
+        PendingIntent sentIntent = PendingIntent.getBroadcast(MainActivity.this, 0, new Intent(), 0);
+        smsManager.sendTextMessage(phone, null, "android. 测试短信..", sentIntent, null);
+        Log.i(tag, "sendSMS");
+	}
+
 }

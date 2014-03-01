@@ -65,7 +65,9 @@ public class OrderFragment extends Fragment implements OnClickListener {
 		order_info = (LinearLayout)orderLayout.findViewById(R.id.order_info);
 		items_header = (LinearLayout)orderLayout.findViewById(R.id.items_header);
 
-	
+
+		order_info.setVisibility(View.GONE);
+		items_header.setVisibility(View.GONE);	
 		new refreshOrderTask().execute(0);
 		
 		return orderLayout;
@@ -86,15 +88,13 @@ public class OrderFragment extends Fragment implements OnClickListener {
 	class refreshOrderTask extends AsyncTask<Integer, Integer, String> {
 		@Override
 		protected String doInBackground(Integer... params) {
-			order_info.setVisibility(View.GONE);
-			items_header.setVisibility(View.GONE);
 			return CaiCai.order(order_id);
 		}
 		@Override
 		protected void onPostExecute(String result) {
+
 			order_info.setVisibility(View.VISIBLE);
 			items_header.setVisibility(View.VISIBLE);
-			
 			
 			JSONObject json = CaiCai.StringToJSONObject(result);
 			Order order = Order.jsonToOrder(json);

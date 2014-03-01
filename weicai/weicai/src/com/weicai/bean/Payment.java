@@ -10,9 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.weicai.daoCore.Id;
-import com.weicai.daoCore.Transient;
-
+import android.annotation.SuppressLint;
 
 /**
  * @author jiuwuerliu@sina.com
@@ -20,44 +18,28 @@ import com.weicai.daoCore.Transient;
  *         数据库实体对象
  */
 public class Payment {
+	@SuppressLint("SimpleDateFormat")
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	/**
-	 * 主键字段
-	 */
-	@Id
-	private int id;
+	private long id;
 	private Date createdAt;
 	private Date updatedAt;
-	/** 操作者 */
-	private String operatorName; 
+	/** 交易类型 */
+	private String type;
+	/** 描述 */
+	private String desc;
 	/** 交易金额 */
 	private double amount;
 	/** 余额 */
 	private double overage;
-	private int orderId;
-	private String orderSn;
 
-	/**
-	 * 非数据库字段
-	 */
-	@Transient
-	private String detail;
+	private long orderId;
 
-	@Transient
-	private String[] amountArray;
-
-	public Payment() {
-	}
-
-	public Payment(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -77,39 +59,20 @@ public class Payment {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getDetail() {
-		return detail;
+	public String getType() {
+		return type;
 	}
 
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-
-
-
-	public String getOperatorName() {
-		return operatorName;
+	public String getDesc() {
+		return desc;
 	}
 
-	public void setOperatorName(String operatorName) {
-		this.operatorName = operatorName;
-	}
-
-	public int getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
-
-	public String getOrderSn() {
-		return orderSn;
-	}
-
-	public void setOrderSn(String orderSn) {
-		this.orderSn = orderSn;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
 	public double getAmount() {
@@ -128,12 +91,12 @@ public class Payment {
 		this.overage = overage;
 	}
 
-	public String[] getAmountArray() {
-		return amountArray;
+	public long getOrderId() {
+		return orderId;
 	}
 
-	public void setAmountArray(String[] amountArray) {
-		this.amountArray = amountArray;
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
 	}
 
 	public static List<Payment> jsonToList(JSONArray array) {
@@ -142,29 +105,26 @@ public class Payment {
 			for (int i = 0; i < array.length(); i++) {
 				try {
 					JSONObject p = array.getJSONObject(i);
-					Payment order = new Payment();
-					order.setId(p.getInt("id"));
-					
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Payment payment = new Payment();
+					payment.setId(p.getLong("id"));
 					try {
 						Date createdAt = sdf.parse(p.getString("created_at"));
-						order.setCreatedAt(createdAt);
+						payment.setCreatedAt(createdAt);
 					} catch (ParseException e) {
 					}
 					try {
 						Date updatedAt = sdf.parse(p.getString("updated_at"));
-						order.setUpdatedAt(updatedAt);
+						payment.setUpdatedAt(updatedAt);
 					} catch (ParseException e) {
 					}
-					
-					order.setOrderSn(p.getString("order_sn"));
-					if (!"".equals(p.getString("order_id"))){
-						order.setOrderId(p.getInt("order_id"));
+					if(p.has("order_id")){
+						payment.setOrderId(p.getLong("order_id"));
 					}
-					order.setOperatorName(p.getString("operator_name"));
-					order.setAmount(p.getDouble("amount"));
-					order.setOverage(p.getDouble("overage"));
-					list.add(order);
+					payment.setType(p.getString("type"));
+					payment.setDesc(p.getString("desc"));
+					payment.setAmount(p.getDouble("amount"));
+					payment.setOverage(p.getDouble("overage"));
+					list.add(payment);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

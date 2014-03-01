@@ -2,7 +2,6 @@ package com.weicai.adapter;
 
 import java.util.List;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

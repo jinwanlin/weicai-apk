@@ -8,23 +8,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.weicai.daoCore.Id;
-import com.weicai.daoCore.Table;
-import com.weicai.daoCore.Transient;
-
-
 /**
  * @author jiuwuerliu@sina.com
  * 
  *         数据库实体对象
  */
-@Table(name = "t_product")
 public class Product {
 
-	/**
-	 * 主键字段
-	 */
-	@Id
 	private int id;
 	private Date createdAt;
 	private Date updatedAt;
@@ -35,22 +25,6 @@ public class Product {
 	private String amounts;
 	private double price;
 	private String unit;
-
-	/**
-	 * 非数据库字段
-	 */
-	@Transient
-	private String detail;
-
-	@Transient
-	private String[] amountArray;
-
-	public Product() {
-	}
-
-	public Product(int id) {
-		this.id = id;
-	}
 
 	public int getId() {
 		return id;
@@ -76,12 +50,12 @@ public class Product {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getDetail() {
-		return detail;
+	public String getSn() {
+		return sn;
 	}
 
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public void setSn(String sn) {
+		this.sn = sn;
 	}
 
 	public String getName() {
@@ -90,14 +64,6 @@ public class Product {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getSn() {
-		return sn;
-	}
-
-	public void setSn(String sn) {
-		this.sn = sn;
 	}
 
 	public String getType() {
@@ -116,24 +82,6 @@ public class Product {
 		this.amounts = amounts;
 	}
 
-	public String[] getAmountArray() {
-		String[] amountArray;
-		if (amounts != null && !amounts.equals("")) {
-			amountArray = amounts.split(",");
-		} else {
-			amountArray = new String[0];
-		}
-		return amountArray;
-	}
-
-	public String[] getAmountArray_unit() {
-		String[] amountArray = getAmountArray();
-		for (int i = 0; i < amountArray.length; i++) {
-			amountArray[i] = amountArray[i]+unit;
-		}
-		return amountArray;
-	}
-
 	public double getPrice() {
 		return price;
 	}
@@ -148,6 +96,24 @@ public class Product {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public String[] getAmountArray() {
+		String[] amountArray;
+		if (amounts != null && !amounts.equals("")) {
+			amountArray = amounts.split(",");
+		} else {
+			amountArray = new String[0];
+		}
+		return amountArray;
+	}
+
+	public String[] getAmountArray_unit() {
+		String[] amountArray = getAmountArray();
+		for (int i = 0; i < amountArray.length; i++) {
+			amountArray[i] = amountArray[i] + unit;
+		}
+		return amountArray;
 	}
 
 	public static List<Product> jsonToList(JSONArray array) {

@@ -10,27 +10,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.weicai.R;
-import com.weicai.daoCore.Id;
-import com.weicai.daoCore.Table;
-import com.weicai.daoCore.Transient;
-
+import android.annotation.SuppressLint;
 
 /**
  * @author jiuwuerliu@sina.com
  * 
  *         数据库实体对象
  */
-@Table(name = "t_order")
+@SuppressLint("DefaultLocale")
 public class Order {
 
+	@SuppressLint("SimpleDateFormat")
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-	/**
-	 * 主键字段
-	 */
-	@Id
-	private int id;
+	
+	private long id;
 	private Date createdAt;
 	private Date updatedAt;
 
@@ -40,27 +33,11 @@ public class Order {
 	private String state;
 	private List<OrderItem> orderItems;
 
-	/**
-	 * 非数据库字段
-	 */
-	@Transient
-	private String detail;
-
-	@Transient
-	private String[] amountArray;
-
-	public Order() {
-	}
-
-	public Order(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -80,12 +57,12 @@ public class Order {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getDetail() {
-		return detail;
+	public String getSn() {
+		return sn;
 	}
 
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public void setSn(String sn) {
+		this.sn = sn;
 	}
 
 	public double getOrderSum() {
@@ -112,24 +89,6 @@ public class Order {
 		this.state = state;
 	}
 
-	public String[] getAmountArray() {
-		return amountArray;
-	}
-
-	public void setAmountArray(String[] amountArray) {
-		this.amountArray = amountArray;
-	}
-
-	public String getSn() {
-		return sn;
-	}
-
-	public void setSn(String sn) {
-		this.sn = sn;
-	}
-	
-	
-
 	public List<OrderItem> getOrderItems() {
 		return orderItems;
 	}
@@ -137,11 +96,6 @@ public class Order {
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
-
-	public static SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
 
 	public static Order jsonToOrder(JSONObject p) {
 		Order order = new Order();
@@ -163,29 +117,27 @@ public class Order {
 			} catch (ParseException e) {
 			}
 
-			if (p.has("order_items")){
+			if (p.has("order_items")) {
 				JSONArray order_items = p.getJSONArray("order_items");
 				List<OrderItem> items = OrderItem.jsonToList(order_items);
 				order.setOrderItems(items);
 			}
-			
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return order;
 	}
-	
-	
+
 	public static List<Order> jsonToList(JSONArray array) {
 
 		List<Order> list = new ArrayList<Order>();
 		if (array != null && array.length() > 0) {
 			for (int i = 0; i < array.length(); i++) {
 				try {
-				JSONObject p = array.getJSONObject(i);
-				Order order = jsonToOrder(p);
-				list.add(order);
+					JSONObject p = array.getJSONObject(i);
+					Order order = jsonToOrder(p);
+					list.add(order);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -194,6 +146,7 @@ public class Order {
 		return list;
 	}
 
+	@SuppressLint("DefaultLocale")
 	public String getState_() {
 		switch (State.toState(state.toUpperCase())) {
 		case PENDING:

@@ -10,10 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.weicai.R;
-import com.weicai.daoCore.Id;
-import com.weicai.daoCore.Table;
-import com.weicai.daoCore.Transient;
+import android.annotation.SuppressLint;
 
 
 /**
@@ -21,16 +18,12 @@ import com.weicai.daoCore.Transient;
  * 
  *         数据库实体对象
  */
-@Table(name = "t_order_item")
 public class OrderItem {
+	@SuppressLint("SimpleDateFormat")
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-	/**
-	 * 主键字段
-	 */
-	@Id
-	private int id;
+	private long id;
 	private Date createdAt;
 	private Date updatedAt;
 	
@@ -45,28 +38,11 @@ public class OrderItem {
 	private double orderSum;
 	private double shipSum;
 	
-
-	/**
-	 * 非数据库字段
-	 */
-	@Transient
-	private String detail;
-
-	@Transient
-	private String[] amountArray;
-
-	public OrderItem() {
-	}
-
-	public OrderItem(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -86,24 +62,6 @@ public class OrderItem {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
-
-
-	public String getProductUnit() {
-		return productUnit;
-	}
-
-	public void setProductUnit(String productUnit) {
-		this.productUnit = productUnit;
-	}
-
 	public int getProductId() {
 		return productId;
 	}
@@ -120,6 +78,14 @@ public class OrderItem {
 		this.productName = productName;
 	}
 
+	public String getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(String productUnit) {
+		this.productUnit = productUnit;
+	}
+
 	public int getOrderId() {
 		return orderId;
 	}
@@ -133,14 +99,6 @@ public class OrderItem {
 	}
 
 	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public static SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
-	public void setPrice(float price) {
 		this.price = price;
 	}
 
@@ -176,18 +134,10 @@ public class OrderItem {
 		this.shipSum = shipSum;
 	}
 
-	public String[] getAmountArray() {
-		return amountArray;
-	}
-
-	public void setAmountArray(String[] amountArray) {
-		this.amountArray = amountArray;
-	}
-
 	public static OrderItem jsonToOrderItem(JSONObject json) {
 		OrderItem orderItem = new OrderItem();
 		try {
-			orderItem.setId(json.getInt("id"));
+			orderItem.setId(json.getLong("id"));
 			orderItem.setProductId(json.getInt("product_id"));
 			orderItem.setProductName(json.getString("product_name"));
 			orderItem.setProductUnit(json.getString("product_unit"));

@@ -2,12 +2,10 @@ package com.weicai.dao;
 
 import java.util.List;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.weicai.bean.User;
 import com.weicai.daoCore.SqliteDAO;
-
-
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
  
 /**
  * @author jiuwuerliu@sina.com
@@ -23,7 +21,7 @@ public class UserDao {
         SQLiteDatabase db=SQLiteDatabase.create(null);  
         String createdb=
                 "CREATE TABLE IF NOT EXISTS t_user("
-                +"id         INTEGER PRIMARY KEY,"
+                +"id         LONG PRIMARY KEY,"
                 +"name       VARCHAR(512)"
                 +");";
         db.execSQL(createdb);       

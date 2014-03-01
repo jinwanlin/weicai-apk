@@ -181,6 +181,7 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:gravity="right"
             android:text="金额"
             android:textColor="#666"
             android:textSize="15sp" >

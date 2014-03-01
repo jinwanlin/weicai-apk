@@ -6,27 +6,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.weicai.R;
 
 public class SettingFragment extends Fragment implements OnClickListener {
 
+	private TextView call;
+	private MainActivity context;
+
+	public void setContext(MainActivity context) {
+		this.context = context;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View settingLayout = inflater.inflate(R.layout.setting_layout, container, false);
-		
-//		settingImage = (ImageView) settingLayout.findViewById(R.id.setting_1);
-//		settingText = (TextView) settingLayout.findViewById(R.id.setting_2);
-//		settingImage.setOnClickListener(this);
+
+		call = (TextView) settingLayout.findViewById(R.id.call);
+		call.setOnClickListener(this);
 
 		return settingLayout;
 	}
-	
+
 	@Override
 	public void onClick(View arg0) {
-//		settingText.append("1");
-		
+		context.call("15657715360");
 	}
 
 }

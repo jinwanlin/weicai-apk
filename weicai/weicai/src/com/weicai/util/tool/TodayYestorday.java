@@ -1,5 +1,6 @@
 package com.weicai.util.tool;
 
+import android.annotation.SuppressLint;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,9 +21,13 @@ public class TodayYestorday {
 	}
 
 	// 将传入时间与当前时间进行对比，是否今天\昨天\前天\同一年
+	@SuppressLint("SimpleDateFormat")
 	public static String getTime(Date date) {
+		if (date == null){
+			return "";
+		}
 		boolean sameYear = false;
-		String todySDF = "HH:mm";
+//		String todySDF = "HH:mm";
 		String yesterDaySDF = "昨天";
 		String beforYesterDaySDF = "前天";
 		String otherSDF = "MM-dd";

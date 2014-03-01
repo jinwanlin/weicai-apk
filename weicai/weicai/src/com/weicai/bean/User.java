@@ -1,16 +1,10 @@
 package com.weicai.bean;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.weicai.daoCore.Id;
 import com.weicai.daoCore.Table;
-import com.weicai.daoCore.Transient;
 
 
 /**
@@ -25,7 +19,7 @@ public class User {
 	 * 主键字段
 	 */
 	@Id
-	private int id;
+	private long id;
 	private String name;
 
 	/**
@@ -37,15 +31,15 @@ public class User {
 	public User() {
 	}
 
-	public User(int id) {
+	public User(long id) {
 		this.id = id;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -70,7 +64,7 @@ public class User {
 		if (obj != null) {
 			user = new User();
 			try {
-				user.setId(obj.getInt("id"));
+				user.setId(obj.getLong("id"));
 				user.setName(obj.getString("name"));
 			} catch (JSONException e) {
 				e.printStackTrace();

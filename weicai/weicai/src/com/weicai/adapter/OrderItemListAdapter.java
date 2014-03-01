@@ -23,13 +23,13 @@ public class OrderItemListAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	
 	private List<OrderItem> orderItems;
-	private OrderFragment orderFragment;
+//	private OrderFragment orderFragment;
 	
 	/*构造函数*/
 	public OrderItemListAdapter(Context context, List<OrderItem> orderItems, OrderFragment orderFragment) {
 		this.orderItems = orderItems;
 		this.mInflater = LayoutInflater.from(context);
-		this.orderFragment = orderFragment;
+//		this.orderFragment = orderFragment;
 	}
 	
 

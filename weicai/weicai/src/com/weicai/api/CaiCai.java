@@ -7,20 +7,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.weicai.bean.User;
+import android.util.Log;
+
 import com.weicai.dao.UserDao;
 import com.weicai.util.net.HttpUtils;
-
-import android.util.Log;
 
 public class CaiCai {
 
 	private static final String BASE_URL = "http://192.168.0.103:3000";
 //	 private static final String BASE_URL = "http://115.28.160.65";
 
-	// JSONObject jsonObject = new JSONObject(response);
-	// String re_username = jsonObject.getString("username");
-	// int re_user_id = jsonObject.getInt("user_id");
 	/**
 	 * String 转 JSONObject
 	 * 
