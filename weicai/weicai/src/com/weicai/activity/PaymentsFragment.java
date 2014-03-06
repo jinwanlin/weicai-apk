@@ -5,11 +5,8 @@ import java.util.List;
 import org.json.JSONArray;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,18 +19,24 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.weicai.R;
+import com.weicai.activity.BaseActivity.NetTask;
 import com.weicai.api.CaiCai;
 import com.weicai.bean.Payment;
 import com.weicai.util.tool.TodayYestorday;
 
-public class PaymentsFragment extends Fragment implements OnClickListener {
+public class PaymentsFragment extends Fragment {
 
 	private TextView overage;
 	private TableLayout table;
-	private MainActivity context;
+	private MainActivity mainActivity;
 
-	public void setContext(MainActivity context) {
-		this.context = context;
+
+	public MainActivity getMainActivity() {
+		return mainActivity;
+	}
+
+	public void setMainActivity(MainActivity mainActivity) {
+		this.mainActivity = mainActivity;
 	}
 
 	@Override
@@ -43,23 +46,23 @@ public class PaymentsFragment extends Fragment implements OnClickListener {
 		overage = (TextView) layout.findViewById(R.id.overage);
 		table = (TableLayout) layout.findViewById(R.id.table);
 
-		new refreshPaymentsTask().execute(0);
+		new RefreshPaymentsTask().execute(0);
 		return layout;
 	}
 
-	@Override
-	public void onClick(View v) {
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.hide(PaymentsFragment.this);
-
-		OrderFragment orderFragment = new OrderFragment();
-		orderFragment.setLastFragment(this);
-		MainActivity.orderFragment = orderFragment;
-
-		transaction.add(R.id.content, orderFragment);
-		transaction.commit();
-	}
+//	@Override
+//	public void onClick(View v) {
+//		FragmentManager fragmentManager = getFragmentManager();
+//		FragmentTransaction transaction = fragmentManager.beginTransaction();
+//		transaction.hide(PaymentsFragment.this);
+//
+//		OrderFragment orderFragment = new OrderFragment();
+//		orderFragment.setLastFragment(this);
+//		MainActivity.orderFragment = orderFragment;
+//
+//		transaction.add(R.id.content, orderFragment);
+//		transaction.commit();
+//	}
 
 	public void showPayments(List<Payment> payments) {
 		// 显示余额
@@ -72,30 +75,30 @@ public class PaymentsFragment extends Fragment implements OnClickListener {
 		for (int i = 0; i < payments.size(); i++) {
 			final Payment payment = payments.get(i);
 
-			final TableRow row = new TableRow(context);
+			final TableRow row = new TableRow(mainActivity);
 			row.setId(i);
 
-			LinearLayout td_1 = new LinearLayout(context);
+			LinearLayout td_1 = new LinearLayout(mainActivity);
 			td_1.setOrientation(LinearLayout.VERTICAL);
 			td_1.setPadding(10, 10, 10, 10);
 
-			TextView pay_text = new TextView(context);
+			TextView pay_text = new TextView(mainActivity);
 			pay_text.setText(payment.getType());
 			pay_text.setTextSize(18);
 			td_1.addView(pay_text);
 
-			TextView pay_date = new TextView(context);
+			TextView pay_date = new TextView(mainActivity);
 			pay_date.setText(TodayYestorday.getTime(payment.getCreatedAt()));
 			pay_date.setTextSize(13);
 			pay_date.setTextColor(Color.rgb(112, 112, 112));
 			td_1.addView(pay_date);
 
-			TextView desc = new TextView(context);
+			TextView desc = new TextView(mainActivity);
 			desc.setText(payment.getDesc());
 			desc.setTextSize(18);
 			desc.setPadding(10, 10, 10, 10);
 
-			TextView total = new TextView(context);
+			TextView total = new TextView(mainActivity);
 			total.setText(payment.getAmount() + "");
 			total.setTextSize(18);
 			total.setHeight(50);
@@ -111,8 +114,9 @@ public class PaymentsFragment extends Fragment implements OnClickListener {
 			row.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// table.removeView(table.findViewById(0));
-					showOrder(payment.getOrderId());
+					if(payment.getOrderId()!=0){
+						mainActivity.showOrder(payment.getOrderId(), PaymentsFragment.this);
+					}
 				}
 			});
 
@@ -120,34 +124,20 @@ public class PaymentsFragment extends Fragment implements OnClickListener {
 			table.addView(row);
 
 			// 分隔线
-			TextView line = new TextView(context);
+			TextView line = new TextView(mainActivity);
 			line.setHeight(1);
 			line.setBackgroundColor(Color.rgb(110, 110, 110));
 			table.addView(line);
 		}
-
-	}
-
-	public void showOrder(long order_id) {
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.hide(PaymentsFragment.this);
-
-		OrderFragment orderFragment = new OrderFragment();
-		orderFragment.setLastFragment(this);
-		orderFragment.setOrder_id(order_id);
-		orderFragment.setContext(context);
-		MainActivity.orderFragment = orderFragment;
-
-		transaction.add(R.id.content, orderFragment);
-		transaction.commit();
+ 
 	}
 
 
 	/**
 	 * 刷新订单列表
 	 */
-	class refreshPaymentsTask extends AsyncTask<Integer, Integer, String> {
+	class RefreshPaymentsTask extends NetTask {
+		
 		@Override
 		protected String doInBackground(Integer... params) {
 			return CaiCai.payments();
@@ -155,6 +145,11 @@ public class PaymentsFragment extends Fragment implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if(result == null || result.equals("")){
+				return;
+			}
+			
 			JSONArray json = CaiCai.StringToJSONArray(result);
 			List<Payment> payments = Payment.jsonToList(json);
 

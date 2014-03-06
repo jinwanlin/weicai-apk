@@ -118,15 +118,16 @@
             android:paddingRight="10dp" >
 
             <TextView
+                android:id="@+id/total_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="金额"
+                android:text=""
                 android:textColor="#666"
                 android:textSize="13sp" >
             </TextView>
 
             <TextView
-                android:id="@+id/amount"
+                android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -167,22 +168,22 @@
         </TextView>
 
         <TextView
-            android:id="@+id/amount"
+            android:id="@+id/amount_title"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="出货量"
+            android:text=""
             android:textColor="#666"
             android:textSize="15sp" >
         </TextView>
 
         <TextView
-            android:id="@+id/amount"
+            android:id="@+id/total_title2"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:gravity="right"
-            android:text="金额"
+            android:text=""
             android:textColor="#666"
             android:textSize="15sp" >
         </TextView>

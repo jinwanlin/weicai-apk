@@ -21,6 +21,7 @@ public class User {
 	@Id
 	private long id;
 	private String name;
+	private String phone;
 
 	/**
 	 * 非数据库字段
@@ -43,20 +44,20 @@ public class User {
 		this.id = id;
 	}
 
-	// public String getDetail() {
-	// return detail;
-	// }
-	//
-	// public void setDetail(String detail) {
-	// this.detail = detail;
-	// }
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public static User jsonToUser(JSONObject obj) {
@@ -66,6 +67,7 @@ public class User {
 			try {
 				user.setId(obj.getLong("id"));
 				user.setName(obj.getString("name"));
+				user.setPhone(obj.getString("phone"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

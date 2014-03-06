@@ -5,8 +5,6 @@ import java.util.List;
 import org.json.JSONArray;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +26,17 @@ public class OrdersFragment extends Fragment {
 	private ListView orderListLV;
 	private Context context;
 	
+	private MainActivity mainActivity;
+
+
+	public MainActivity getMainActivity() {
+		return mainActivity;
+	}
+
+	public void setMainActivity(MainActivity mainActivity) {
+		this.mainActivity = mainActivity;
+	}
+	
 	public void setContext(Context context){
 		this.context = context;
 	}
@@ -42,23 +51,6 @@ public class OrdersFragment extends Fragment {
 		return layout;
 	}
 	
-	public void showOrder(long order_id) {
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.hide(OrdersFragment.this);
-		
-		OrderFragment orderFragment = new OrderFragment();
-		orderFragment.setLastFragment(this);
-		orderFragment.setOrder_id(order_id);
-		orderFragment.setContext(context);
-		MainActivity.orderFragment = orderFragment;
-		
-		transaction.add(R.id.content, orderFragment);
-		transaction.commit();
-	}
-	
-	
-    
     
     /**
      * 刷新订单列表

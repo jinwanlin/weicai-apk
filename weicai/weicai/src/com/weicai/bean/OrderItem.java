@@ -31,11 +31,19 @@ public class OrderItem {
 	private String productName;
 	private String productUnit;
 	private int orderId;
+	private Order order;
     
+	/** 单价 */
 	private double price;
+	
+	/** 订购量 */
 	private int orderAmount;
+	/** 出货量 */
 	private double shipAmount;
+	
+	/** 订购金额 */
 	private double orderSum;
+	/** 出货金额 */
 	private double shipSum;
 	
 	public long getId() {
@@ -134,6 +142,22 @@ public class OrderItem {
 		this.shipSum = shipSum;
 	}
 
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public double getSum(){
+		return order.is_ship() ? shipSum : orderSum;
+	}
+	
+	public double getAmount(){
+		return order.is_ship() ? shipAmount : orderAmount;
+	}
+	
 	public static OrderItem jsonToOrderItem(JSONObject json) {
 		OrderItem orderItem = new OrderItem();
 		try {
@@ -164,7 +188,7 @@ public class OrderItem {
 		return orderItem;
 	}
 	
-	public static List<OrderItem> jsonToList(JSONArray array) {
+	public static List<OrderItem> jsonToList(JSONArray array, Order order) {
 
 		List<OrderItem> list = new ArrayList<OrderItem>();
 		if (array != null && array.length() > 0) {
@@ -172,6 +196,7 @@ public class OrderItem {
 				try {
 					JSONObject json = array.getJSONObject(i);
 					OrderItem item = jsonToOrderItem(json);
+					item.setOrder(order);
 					list.add(item);
 				} catch (JSONException e) {
 					e.printStackTrace();

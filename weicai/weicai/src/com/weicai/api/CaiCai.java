@@ -13,6 +13,12 @@ import com.weicai.dao.UserDao;
 import com.weicai.util.net.HttpUtils;
 
 public class CaiCai {
+	
+	private static UserDao userDao;
+
+	static{
+		userDao = UserDao.getInstance();
+	}
 
 	private static final String BASE_URL = "http://192.168.0.103:3000";
 //	 private static final String BASE_URL = "http://115.28.160.65";
@@ -24,7 +30,7 @@ public class CaiCai {
 	 * @return
 	 */
 	public static JSONObject StringToJSONObject(String str) {
-		if (str == null) {
+		if (str.equals("")) {
 			return null;
 		}
 
@@ -77,7 +83,7 @@ public class CaiCai {
 	public static String productsStr(String type) {
 		String url = BASE_URL + "/api/v2/products/list";
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("user[id]", UserDao.first().getId()+"");
+		map.put("user[id]", userDao.first().getId()+"");
 		if(type!=null){
 			map.put("type", type);
 		}
@@ -111,7 +117,7 @@ public class CaiCai {
 		String url = BASE_URL + "/api/v2/orders/list";
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("user[id]", UserDao.first().getId()+"");
+		map.put("user[id]", userDao.first().getId()+"");
 		
 		return HttpUtils.doPost(url, map);
 	}
@@ -136,12 +142,31 @@ public class CaiCai {
 		String url = BASE_URL + "/api/v2/payments/list";
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("user[id]", UserDao.first().getId()+"");
+		map.put("user[id]", userDao.first().getId()+"");
 		
 		return HttpUtils.doPost(url, map);
 	}
 	
+	/**
+	 * 注册是否需要验证码
+	 * @return
+	 */
+	public static String has_validate_code() {
+		String url = BASE_URL + "/api/v2/users/has_validate_code";
+		return HttpUtils.doGet(url);
+	}
 	
+	
+	/**
+	 * 发送注册验证码
+	 * @return
+	 */
+	public static String get_validate_code(String phone) {
+		String url = BASE_URL + "/api/v2/users/get_validate_code";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("user[phone]", phone);
+		return HttpUtils.doPost(url, map);
+	}
 
 	/**
 	 * 登陆
@@ -208,7 +233,7 @@ public class CaiCai {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("order_item[product_id]", product_id);
 		map.put("order_item[order_amount]", amount);
-		map.put("user[id]", UserDao.first().getId()+"");
+		map.put("user[id]", userDao.first().getId()+"");
 
 		return HttpUtils.doPost(url, map);
 	}

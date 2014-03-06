@@ -32,8 +32,12 @@ public class OrderFragment extends Fragment implements OnClickListener {
 	private Fragment lastFragment;
 	private long order_id;
 	private ListView orderItemsLV;
-	private TextView sn, state, date, amount;
+	private TextView sn, state, date, total;
 	private LinearLayout order_info, items_header;
+	
+
+	public TextView amount_title;
+	public TextView total_title, total_title2;
 	
 	private Context context;
 	
@@ -58,7 +62,11 @@ public class OrderFragment extends Fragment implements OnClickListener {
 		sn = (TextView)orderLayout.findViewById(R.id.sn);
 		state = (TextView)orderLayout.findViewById(R.id.state);
 		date = (TextView)orderLayout.findViewById(R.id.date);
-		amount = (TextView)orderLayout.findViewById(R.id.amount);
+		total = (TextView)orderLayout.findViewById(R.id.total);
+
+		amount_title = (TextView)orderLayout.findViewById(R.id.amount_title);
+		total_title = (TextView)orderLayout.findViewById(R.id.total_title);
+		total_title2 = (TextView)orderLayout.findViewById(R.id.total_title2);
 		
 		orderItemsLV = (ListView) orderLayout.findViewById(R.id.orderItemsLV);
 		
@@ -102,7 +110,11 @@ public class OrderFragment extends Fragment implements OnClickListener {
 			sn.setText(order.getSn());
 			state.setText(order.getState_());
 			date.setText(TodayYestorday.getTime(order.getCreatedAt()));
-			amount.setText(order.getShipSum()+"");
+			total.setText(order.get_sum()+"");
+			
+			amount_title.setText(order.is_ship() ? "出货量" : "订购量");
+			total_title.setText(order.is_ship() ? "出货金额" : "订购金额");
+			total_title2.setText(order.is_ship() ? "出货金额" : "订购金额");
 			
 			List<Order> list = new ArrayList<Order>();
 			list.add(order);

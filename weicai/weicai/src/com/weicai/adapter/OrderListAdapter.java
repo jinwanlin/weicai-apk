@@ -77,14 +77,17 @@ public class OrderListAdapter extends BaseAdapter {
 			holder.date.setText(TodayYestorday.getTime(order.getCreatedAt()));
 		}
 		holder.order_sn.setText(order.getSn());
-		holder.amount.setText(order.getShipSum()+"元");
+
+		
+		holder.amount.setText(order.get_sum()+"元");
 		holder.state.setText(order.getState_());
 		holder.order = order;
 		
 		convertView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ordersFragment.showOrder(getItemId(position));
+//				ordersFragment.showOrder(getItemId(position));
+				ordersFragment.getMainActivity().showOrder(getItemId(position), ordersFragment);
 			}
 		});
 		return convertView;

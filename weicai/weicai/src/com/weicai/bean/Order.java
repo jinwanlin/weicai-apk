@@ -97,6 +97,17 @@ public class Order {
 		this.orderItems = orderItems;
 	}
 
+	/** 是否已出库 */
+	public boolean is_ship(){
+		State order_state = State.toState(state.toUpperCase());
+		return Order.State.PENDING != order_state && Order.State.CONFIRMEA != order_state;
+	}
+	
+	public double get_sum(){
+		return is_ship() ? shipSum : orderSum;
+	}
+
+	
 	public static Order jsonToOrder(JSONObject p) {
 		Order order = new Order();
 		try {
@@ -119,7 +130,7 @@ public class Order {
 
 			if (p.has("order_items")) {
 				JSONArray order_items = p.getJSONArray("order_items");
-				List<OrderItem> items = OrderItem.jsonToList(order_items);
+				List<OrderItem> items = OrderItem.jsonToList(order_items, order);
 				order.setOrderItems(items);
 			}
 
@@ -151,10 +162,14 @@ public class Order {
 		switch (State.toState(state.toUpperCase())) {
 		case PENDING:
 			return "未提交";
-		case OPEN:
-			return "待出库";
-		case SHIP:
-			return "配送中";
+		case CONFIRMEA:
+			return "已确认待出库";
+		case SHIPING:
+			return "订单已打印出库中";
+		case BALED:
+			return "打包完毕配送中";
+		case SIGNED:
+			return "已送达";
 		case DONE:
 			return "交易成功";
 		case CANCELED:
@@ -165,7 +180,7 @@ public class Order {
 	}
 
 	public enum State {
-		PENDING, OPEN, SHIP, DONE, CANCELED, NULL;
+		PENDING, CONFIRMEA, SHIPING, BALED, SIGNED, DONE, CANCELED, NULL;
 		public static State toState(String str) {
 			try {
 				return valueOf(str);

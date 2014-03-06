@@ -12,43 +12,38 @@ import com.weicai.daoCore.SqliteDAO;
  *
  * 调用示例
  */
-public class UserDao {
-    static final String tag="UserDao";
-     
-    private static SQLiteDatabase db;
+public class UserDao extends SqliteDAO {
+	static final String tag="UserDao";
+    private static UserDao singleton;
     
+	// Returns the UserDao instance
+	public static UserDao getInstance() {
+		if(singleton == null){
+			singleton = new UserDao(createDatabase());
+		}
+		return singleton;
+	}
+	
     public static SQLiteDatabase createDatabase(){    
         SQLiteDatabase db=SQLiteDatabase.create(null);  
         String createdb=
                 "CREATE TABLE IF NOT EXISTS t_user("
                 +"id         LONG PRIMARY KEY,"
-                +"name       VARCHAR(512)"
+                +"name       VARCHAR(255),"
+                +"phone       VARCHAR(255)"
                 +");";
         db.execSQL(createdb);       
         return db;
     }
      
-    static{
-        db=createDatabase();
-    }
-     
-    public static User create(User user){
-        SqliteDAO dao=new SqliteDAO(db);
-        return dao.insert(user);
-    }
-     
-    public static User find_by_id(int id){
-        SqliteDAO dao=new SqliteDAO(db);
-        return dao.loadByPrimaryKey(new User(id));
-    }
     
-    public static List<User> all(){
-        SqliteDAO dao=new SqliteDAO(db);
-        return dao.loadAll(User.class, null);
-    }
+    public UserDao(SQLiteDatabase db) {
+		super(db);
+	}
     
-    public static User first(){
-        List<User> list = all();
+    
+    public User first(){
+        List<User> list = super.loadAll(User.class, null);
         if(list.size() > 0){
         	return list.get(0);
         }else{
@@ -56,8 +51,12 @@ public class UserDao {
         }
     }
     
-    public static long countAll(){
-    	SqliteDAO dao=new SqliteDAO(db);
-        return dao.countAll(User.class);
+    
+    public void deleteAll(){
+    	List<User> users = loadAll(User.class, null);
+    	for (int i = 0; i < users.size(); i++) {
+    		delete(users.get(i));
+		}
     }
+    
 }

@@ -7,7 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
- 
+
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,7 @@ import android.util.Log;
  * @author jiuwuerliu@sina.com
  * 
  */
+@SuppressLint("SimpleDateFormat")
 public class SqliteDAO{
     static final String tag="DAO";
      

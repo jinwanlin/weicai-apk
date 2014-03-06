@@ -1,6 +1,6 @@
 package com.weicai.activity;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -23,7 +23,7 @@ import com.weicai.R;
  * 
  * @author guolin
  */
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends BaseActivity implements OnClickListener {
 	static final String tag = "MainActivity";
 
 	/**
@@ -109,17 +109,21 @@ public class MainActivity extends Activity implements OnClickListener {
 	/**
 	 * 用于对Fragment进行管理
 	 */
-	public static FragmentManager fragmentManager;
+	public FragmentManager fragmentManager;
 	
-	public static OrderFragment orderFragment;
+	public OrderFragment orderFragment;
 	
-
+	public ChangePasswordFragment changePasswordFragment;
+	
+	private Fragment lastFragment;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
+		
+		BaseActivity.baseActivity = this;
 		
 		// 初始化布局元素
 		initViews();
@@ -209,6 +213,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				// 如果OrdersFragment为空，则创建一个并添加到界面上
 				ordersFragment = new OrdersFragment();
 				ordersFragment.setContext(this);
+				ordersFragment.setMainActivity(this);
 				transaction.add(R.id.content, ordersFragment);
 			} else {
 				// 如果OrdersFragment不为空，则直接将它显示出来
@@ -223,7 +228,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (paymentsFragment == null) {
 				// 如果NewsFragment为空，则创建一个并添加到界面上
 				paymentsFragment = new PaymentsFragment();
-				paymentsFragment.setContext(this);
+				paymentsFragment.setMainActivity(this);
 				transaction.add(R.id.content, paymentsFragment);
 			} else {
 				// 如果NewsFragment不为空，则直接将它显示出来
@@ -238,7 +243,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (settingFragment == null) {
 				// 如果SettingFragment为空，则创建一个并添加到界面上
 				settingFragment = new SettingFragment();
-				settingFragment.setContext(this);
+				settingFragment.setMainActivity(this);
 				transaction.add(R.id.content, settingFragment);
 			} else {
 				// 如果SettingFragment不为空，则直接将它显示出来
@@ -270,14 +275,14 @@ public class MainActivity extends Activity implements OnClickListener {
 	 *            用于对Fragment执行操作的事务
 	 */
 	private void hideFragments(FragmentTransaction transaction) {
-		if (orderFragment != null){
-			transaction.hide(orderFragment);
-		}
 		if (productsFragment != null) {
 			transaction.hide(productsFragment);
 		}
 		if (ordersFragment != null) {
 			transaction.hide(ordersFragment);
+		}
+		if (orderFragment != null){
+			transaction.hide(orderFragment);
 		}
 		if (paymentsFragment != null) {
 			transaction.hide(paymentsFragment);
@@ -285,6 +290,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (settingFragment != null) {
 			transaction.hide(settingFragment);
 		}
+		if (changePasswordFragment != null) {
+			transaction.hide(changePasswordFragment);
+		}
+		
 	}
 	
 	public void call(String phone){
@@ -300,5 +309,44 @@ public class MainActivity extends Activity implements OnClickListener {
         smsManager.sendTextMessage(phone, null, "android. 测试短信..", sentIntent, null);
         Log.i(tag, "sendSMS");
 	}
+	
 
+	public void showOrder(long order_id, Fragment lastFragment) {
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		hideFragments(transaction);
+
+		OrderFragment orderFragment = new OrderFragment();
+		orderFragment.setLastFragment(lastFragment);
+		orderFragment.setOrder_id(order_id);
+		orderFragment.setContext(this);
+		this.orderFragment = orderFragment;
+
+		transaction.add(R.id.content, orderFragment);
+		transaction.commit();
+	}
+	
+
+	public void changePassword() {
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		hideFragments(transaction);
+
+		ChangePasswordFragment changePasswordFragment = new ChangePasswordFragment();
+		changePasswordFragment.setMainActivity(this);
+		this.changePasswordFragment = changePasswordFragment;
+		this.lastFragment = settingFragment;
+
+		transaction.add(R.id.content, changePasswordFragment);
+		transaction.commit();
+	}
+
+	public void back() {
+		if(lastFragment!=null){
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			hideFragments(transaction);
+			
+			Log.i(tag, lastFragment.getClass().getName());
+			transaction.show(lastFragment);
+			transaction.commit();
+		}
+	}
 }

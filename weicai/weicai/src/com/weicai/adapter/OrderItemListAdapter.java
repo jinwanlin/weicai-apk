@@ -66,7 +66,7 @@ public class OrderItemListAdapter extends BaseAdapter {
 			holder.amount = (TextView) convertView.findViewById(R.id.amount);
 			holder.amount_unit = (TextView) convertView.findViewById(R.id.amount_unit);
 			holder.total = (TextView) convertView.findViewById(R.id.total);
-			
+
 			convertView.setTag(holder);// 绑定ViewHolder对象
 		} else {
 			holder = (ViewHolder) convertView.getTag();// 取出ViewHolder对象
@@ -79,10 +79,12 @@ public class OrderItemListAdapter extends BaseAdapter {
 		holder.product_name.setText(orderItem.getProductName());
 		holder.price.setText(orderItem.getPrice()+"");
 		holder.price_unit.setText("元/" + orderItem.getProductUnit());
-		holder.amount.setText(orderItem.getShipSum()+"");
+		holder.amount.setText(orderItem.getAmount()+"");
 		holder.amount_unit.setText(orderItem.getProductUnit());
-		holder.total.setText(orderItem.getShipAmount()+"");
+		holder.total.setText(orderItem.getSum()+"");
 		holder.orderItem = orderItem;
+		
+		
 		
 //		convertView.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -104,6 +106,7 @@ public class OrderItemListAdapter extends BaseAdapter {
 		public TextView amount;
 		public TextView amount_unit;
 		public TextView total;
+
 	}
 	
 }

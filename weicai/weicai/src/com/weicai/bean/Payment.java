@@ -117,7 +117,7 @@ public class Payment {
 						payment.setUpdatedAt(updatedAt);
 					} catch (ParseException e) {
 					}
-					if(p.has("order_id")){
+					if(!"".equals(p.getString("order_id"))){
 						payment.setOrderId(p.getLong("order_id"));
 					}
 					payment.setType(p.getString("type"));

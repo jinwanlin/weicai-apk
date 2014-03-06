@@ -44,6 +44,7 @@
             android:padding="10dp" >
 
             <TextView
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="望湘园"
@@ -88,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:padding="10dp"
-                android:text="服务热线：156-5771-5360"
+                android:text="服务热线：158-1084-5422"
                 android:textSize="20sp" >
             </TextView>
         </RelativeLayout>
@@ -114,6 +115,7 @@
                 android:src="@drawable/setting_selected" />
 
             <TextView
+            	android:id="@+id/changePassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -157,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:padding="10dp"
-                android:text="修改密码"
+                android:text="预留"
                 android:textSize="20sp" >
             </TextView>
 
@@ -174,6 +176,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/exit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"

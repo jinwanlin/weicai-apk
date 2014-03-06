@@ -4,26 +4,39 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/tab_bg" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="用户注册"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:id="@+id/header_title"
+            android:layout_width="125dp"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="注册"
+            android:textColor="#fff"
+            android:textSize="20.0dip" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="#f00"
+        android:layout_marginTop="10dp"
+        android:textSize="15.0dip" />
 
     <LinearLayout
+        android:id="@+id/sign_up_ly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -64,14 +77,110 @@
                 android:singleLine="true" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/next_or_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- 验证码 -->
+
+    <TableLayout
+        android:id="@+id/validate_ly"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:shrinkColumns="1"
+        android:stretchColumns="1"
+        android:visibility="gone" >
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机号：" />
+
+            <TextView
+                android:id="@+id/phone_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/change_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:padding="10dp"
+                android:text="更换手机号" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="验证码： " />
+
+            <EditText
+                android:id="@+id/validate_code_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:phoneNumber="true"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/resend_validate_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:padding="10dp"
+                android:text="重新获取验证码"
+                android:textSize="12dp" />
+        </TableRow>
 
         <Button
-            android:id="@+id/sign_up"
+            android:id="@+id/validate_and_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="注册" />
-    </LinearLayout>
+    </TableLayout>
 
-    
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp" >
+
+            <TextView
+                android:id="@+id/sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:padding="10dp"
+                android:text="登陆" />
+
+            <TextView
+                android:id="@+id/find_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:padding="10dp"
+                android:text="忘记密码" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
